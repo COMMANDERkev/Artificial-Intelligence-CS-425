@@ -1,8 +1,11 @@
 #include "PuzzleBoard.h"
+#include <queue>
 
 struct Node
 {
     PuzzleBoard key;
-    Node *first, *second, *third, *fourth;
+    std::que
+    Node *firstMove, *secondMove, *thirdMove, *fourthMove;
 }; 
 typedef Node* BoardTree;
+
