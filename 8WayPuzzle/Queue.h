@@ -1,5 +1,0 @@
-
-struct Queue
-{
-    /* data */
-};
