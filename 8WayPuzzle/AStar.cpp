@@ -7,12 +7,6 @@
 #include <vector>
 #include <queue>
 
-// adding the step cost to the heuristic: g + h
-int computeState(int stepCostG, const Grid g)
-{
-    return stepCostG + heuristicManhattanDistance(g);
-}
-
 // admissable heuristic chosen is manhattan distance
 int heuristicManhattanDistance(const Grid puzzleGrid)
 {
@@ -41,6 +35,12 @@ int heuristicManhattanDistance(const Grid puzzleGrid)
         // for each position in the grid we calculate manhattan distance and add to the total
     }
     return totalManhattanDistance;
+}
+
+// adding the step cost to the heuristic: g + h
+int computeState(int stepCostG, const Grid g)
+{
+    return stepCostG + heuristicManhattanDistance(g);
 }
 
 void AStar(Grid puzzleBoard)
