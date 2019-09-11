@@ -9,9 +9,9 @@ private:
     int grid[3][3];
     int goalGrid[3][3] = 
     {
-        {0, 1, 2},  
-        {3, 4, 5},
-        {6, 7, 8} 
+        {0, 1, 2},  // [0][0-2]
+        {3, 4, 5},  // [1][0-2]
+        {6, 7, 8}   // [2][0-2]
     };
     int heuristicValue; 
     
@@ -22,6 +22,11 @@ public:
     bool isGoalState();
     int heuristicManhattanDistance();
     void printBoard();
+    PuzzleBoard* possibleMoves();
+    PuzzleBoard moveUp(PuzzleBoard);
+    PuzzleBoard moveDown(PuzzleBoard);
+    PuzzleBoard moveLeft(PuzzleBoard);
+    PuzzleBoard moveRight(PuzzleBoard);
 };
 
 PuzzleBoard::PuzzleBoard()
@@ -96,4 +101,49 @@ void PuzzleBoard::printBoard()
         std::cout << grid[i][2]<<"\n----------\n"; 
     }
 }
+
+PuzzleBoard* PuzzleBoard::possibleMoves()
+{
+    int i, j;
+    for (i = 0; i < 3; i++)
+    {
+        for (j = 0; j < 3; j++)
+        {
+            if (grid[i][j] == 0)
+            {
+                break;
+            } 
+        }
+        if (grid[i][j] == 0)
+        {
+            break;
+        }
+    }
+
+    PuzzleBoard boards[4];
+    // which moves can the empty space make ?
+    boards[0] = this->moveUp(boards[0]);
+    boards[1] = this->moveDown(boards[1]);
+    boards[2] = this->moveLeft(boards[2]);
+    boards[3] = this->moveRight(boards[3]);
+}
+
+PuzzleBoard PuzzleBoard::moveUp(PuzzleBoard board)
+{
+    board.setGrid(this->grid);
+    bo
+}
+PuzzleBoard PuzzleBoard::moveDown(PuzzleBoard board)
+{
+
+}
+PuzzleBoard PuzzleBoard::moveLeft(PuzzleBoard board)
+{
+
+}
+PuzzleBoard PuzzleBoard::moveRight(PuzzleBoard board)
+{
+
+}
+
 #endif
