@@ -1,18 +1,98 @@
-// AStar calculates the cost to get to each node with the cost to get to the goal state
-// heuristics function h(n) = total manhattan distance
-// i.e. summation(# of squares from desired location of each tile)
-#ifndef AStar_cpp
-#define AStar_cpp
-#include "Grid.hpp"
+#ifndef ASTAR_CPP
+#define ASTAR_CPP
+#include "AStar.h"
 #include <vector>
-#include <queue>
+#include <cmath>
+#include <iostream>
+using namespace std;
+
+GridNode AStar(GridNode startingBoard)
+{
+	bool goal = false;
+
+	vector<GridNode> frontier = {startingBoard};
+	startingBoard->totalState = computeState(startingBoard);
+	vector<GridNode> closedAndSeen;
+	GridNode current;
+	vector<GridNode> expandedNodes;
+
+
+	while(!frontier.empty() && !goal)
+	{
+		current = findLowestState(frontier);
+		frontier = pop(frontier, current);
+
+		if (current->isGoalState())
+		{
+			cout << "\n\n~~~Goal~~~";
+			return current;
+		}
+		else
+		{
+			expandedNodes = PossibleMoves(current);
+			
+			for (auto child : expandedNodes)
+			{
+				child->totalState = computeState(child);
+
+				if (child->isGoalState())
+				{
+					return child;
+				}
+
+				GridNode sameNode = isIn(frontier, child);
+				if (sameNode && sameNode->totalState < child->totalState)
+				{
+					continue;
+				}
+
+				sameNode = isIn(closedAndSeen, child);
+				if (sameNode && sameNode->totalState < child->totalState)
+				{
+					continue;
+				}
+				else
+				{
+					frontier.push_back(child);
+				}
+			}
+		}
+		closedAndSeen.push_back(current);
+	}
+}
+
+GridNode findLowestState(vector<GridNode> list)
+{
+	GridNode lowest;
+	lowest->totalState = 100;
+	for (auto node : list)
+	{
+		if (lowest->totalState > node->totalState)
+		{
+			lowest = node;
+		}
+	}
+	return lowest;
+}
+
+GridNode isIn(vector<GridNode> list, GridNode node)
+{
+	for (auto elem : list)
+	{
+		if (isEqual(node, elem))
+		{
+			return elem;
+		}
+	}
+	return nullptr;
+}
 
 // admissable heuristic chosen is manhattan distance
-int heuristicManhattanDistance(const Grid puzzleGrid)
+int heuristicManhattanDistance(GridNode node)
 {
     int totalManhattanDistance = 0;
 
-    if (puzzleGrid.isGoalState())
+    if (node->isGoalState())
     {
         return totalManhattanDistance;
     }
@@ -26,8 +106,8 @@ int heuristicManhattanDistance(const Grid puzzleGrid)
         // similar action to get the goal index for row and col
         // in relation to the number at the position because to tell where that 
         // number should be
-        int rowGoal = puzzleGrid.grid[i] / 3;
-        int colGoal = puzzleGrid.grid[i] % 3;
+        int rowGoal = node->grid[i] / 3;
+        int colGoal = node->grid[i] % 3;
 
         // calculating manhattan distance requires you to take the absolute value of the differences
         // between the y and x grid positions then add them together
@@ -37,34 +117,50 @@ int heuristicManhattanDistance(const Grid puzzleGrid)
     return totalManhattanDistance;
 }
 
-// adding the step cost to the heuristic: g + h
-int computeState(int stepCostG, const Grid g)
+int computeState(GridNode node)
 {
-    return stepCostG + heuristicManhattanDistance(g);
+	if (node->parent)
+	{
+		node->gStep = node->parent->gStep + 1;
+	}
+	else
+	{
+		node->gStep = 0;
+	}
+	node->hManhattan = heuristicManhattanDistance(node);
+	return node->gStep + node->hManhattan;
 }
 
-void AStar(Grid puzzleBoard)
+vector<GridNode> pop(vector<GridNode> list, GridNode node)
 {
-    int stepCost = 0;
-    // Creating a priority queue that orders Nodes by their cost --> heuristic + step cost
-    std::priority_queue< Grid, std::vector<Grid>, CompareGridState > frontier;
-    // creating a list of previously seen grid configs so that they don't repeat
-    std::vector<Grid> seenConfigurations;
-
-    puzzleBoard.state = computeState(stepCost, puzzleBoard);
-    frontier.push(puzzleBoard);
-
-    while (!frontier.top().isGoalState())
-    {
-        stepCost++;
-        // compare current board to board on top of queue
-        // create the other configurations of nodes ~ Expand
-
-
-    }
-    
-    std::cout << "\n~~~~GOAL~~~~\n";
-    frontier.top().printBoard();
-
+	for (int i = 0; i < list.size(); i++)
+	{
+		if (list[i] == node)
+		{
+			list.erase(list.begin() + i);
+		}
+	}
+	return list;
 }
+
+void TraceSearchPath(GridNode child)
+{
+	vector<GridNode> path;
+	GridNode current = child;
+	path.push_back(child);
+	int j = 1;
+	while (current->parent)
+	{
+		path.push_back(current->parent);
+		current = current->parent;
+		j++;
+	}
+
+	for (int i = j; i >= 0; i--)
+	{
+		cout << "\n\nStep " << j - i + 1 << endl;
+		path[i]->printBoard();
+	}
+}
+
 #endif
