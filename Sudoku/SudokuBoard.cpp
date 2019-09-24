@@ -1,9 +1,9 @@
 #include <iostream>
-#include "Board.h"
+#include "SudokuBoard.h"
 using namespace std;
 
 
-Board::Board()
+SudokuBoard::SudokuBoard()
 {
 	// creating squares for sudoku
 
@@ -40,7 +40,7 @@ Board::Board()
 	}
 }
 
-void Board::print()
+void SudokuBoard::print()
 {
 	cout << "the solution is:\n";
 
@@ -62,7 +62,7 @@ void Board::print()
 	}
 }
 
-bool Board::checkRow(int r)
+bool SudokuBoard::checkRow(int r)
 {
 	for (int c = 0; c < col - 1; c++)
 	{
@@ -77,7 +77,7 @@ bool Board::checkRow(int r)
 	return true;
 }
 
-bool Board::checkCol(int c)
+bool SudokuBoard::checkCol(int c)
 {
 	for (int r = 0; r < row; r++)
 	{
@@ -92,7 +92,7 @@ bool Board::checkCol(int c)
 	return true;
 }
 
-bool Board::checkSquare(int square)
+bool SudokuBoard::checkSquare(int square)
 {
 	// square indicates which region of the square we should examine starting from 0
 	// after we get the beginning 
@@ -112,9 +112,8 @@ bool Board::checkSquare(int square)
 	}
 }
 
-void Board::placeNum(int c, int r, int num)
+void SudokuBoard::placeNum(int r, int c, int num)
 {
 	// if nothing there...
-	// check board?
-	board[r][c] = num;
+	board[r][c] == 0 ? board[r][c] = num : ;
 }

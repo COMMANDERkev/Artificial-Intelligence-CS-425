@@ -4,7 +4,7 @@
 using namespace std;
 
 
-struct Board
+struct SudokuBoard
 {
 	int row, col;
 	row = col = 9;
@@ -13,7 +13,7 @@ struct Board
 	// corresponding end coordinates of the sudoku squares
 	array<pair<int, int>, 9> endSquares;
 	int board[row][row];
-	Board();
+	SudokuBoard();
 	void print();
 	bool checkRow(int);
 	bool checkCol(int);
