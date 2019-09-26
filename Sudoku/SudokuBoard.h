@@ -3,20 +3,29 @@
 #include <array>
 using namespace std;
 
+// TODO: make typedef for this pair blah called coord ?
 
 struct SudokuBoard
 {
-	int row, col;
-	row = col = 9;
+	int row = 9;
+	int col = 9;
 	// begin coordinates of the sudoku squares
 	array<pair<int, int>, 9> beginSquares;
 	// corresponding end coordinates of the sudoku squares
 	array<pair<int, int>, 9> endSquares;
-	int board[row][row];
+	array<array<int, 9>, 9> board = {}; // TODO: check if this init to zero
+
 	SudokuBoard();
+	SudokuBoard(const SudokuBoard&);
+	void makeBegin();
+	void makeEnd();
 	void print();
 	bool checkRow(int);
 	bool checkCol(int);
 	bool checkSquare(int);
-	void placeNum(int, int, int);
+	const bool checkCoordSpace(pair<int, int>);
+
+	// TODO: make function to check if it is a solution
+	
+	void placeNum(pair<int, int>, int);
 };

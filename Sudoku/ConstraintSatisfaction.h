@@ -2,8 +2,10 @@
 #include "SudokuBoard.h"
 //#include <utility>
 
-int selectUnassignedVar(SudokuBoard, pair<int, int>);
-int mostConstrainedVar(SudokuBoard, pair<int, int>);
-bool inference(SudokuBoard, int, int);
-bool maintainArcConsistency(SudokuBoard, int, int);
-// TODO: define domain of values (1-9)
+const array<int, 9> domain = { 1,2,3,4,5,6,7,8,9 };
+
+pair<int, int> selectUnassignedVar(SudokuBoard);
+pair<int, int> firstFound(SudokuBoard);
+pair<int, int> mostConstrainedVar(SudokuBoard);
+bool inference(SudokuBoard, pair<int, int>, int);
+bool maintainArcConsistency(SudokuBoard, pair<int, int>, int);
