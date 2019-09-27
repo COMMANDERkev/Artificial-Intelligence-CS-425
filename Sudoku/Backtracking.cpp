@@ -1,40 +1,45 @@
 #include "Backtracking.h"
+#include "ConstraintSatisfaction.cpp"
 #include "ConstraintSatisfaction.h"
+#include <iostream>
+using namespace std;
 
 SudokuBoard BacktrackingSearch(SudokuBoard initialState)
 {
-	return Backtrack(initialState, {});
+	return Backtrack(initialState);
 }
 
-// TODO: Decide WTF to do with this assignment list (PROB REMOVE)
-SudokuBoard Backtrack(SudokuBoard sboard, vector<pair<pair<int, int>, int>> assignmentList)
+SudokuBoard Backtrack(SudokuBoard sboard)
 {
 	// assignment complete ?
-	auto unassignedCoordinate = selectUnassignedVar(sboard);
+	cout << "sourPls\n";
+	pair<int, int> unassignedCoordinate = selectUnassignedVar(sboard);
 	for (int val : domain) // want to select domain based on non/min conflicts
 	{
 		// val consistent with assignment ?
 		if (sboard.checkCoordSpace(unassignedCoordinate))
-		{
-			assignmentList.push_back(unassignedCoordinate, val);
+		{	
+			sboard.placeNum(unassignedCoordinate, val);
 
 			// want to fail fast, so apply some inference logic
-
 			if (inference(sboard, unassignedCoordinate, val))
 			{
-				sboard.placeNum(assignmentList.back(), val);
-				SudokuBoard result = Backtrack(sboard, assignmentList);
+				SudokuBoard result = Backtrack(sboard);
 				if (boardCheck(result))
 				{
+					cout << "the solution is:\n";
+					result.print();
 					return result;
 				}
 			}
+			else
+			{
+				sboard.placeNum(unassignedCoordinate, 0);
+			}
 		}
-		
-
-
-		assignmentList.pop_back();
 	}
 
-	return;
+	cout << "welp\n";
+	SudokuBoard blank;
+	return blank;
 }

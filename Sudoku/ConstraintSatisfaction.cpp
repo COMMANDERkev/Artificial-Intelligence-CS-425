@@ -1,4 +1,7 @@
+#ifndef CONSTRAINTSATISFACTION_cpp
+#define CONSTRAINTSATISFACTION_cpp
 #include "ConstraintSatisfaction.h"
+#include <utility>
 
 pair<int, int> selectUnassignedVar(SudokuBoard sboard)
 {
@@ -13,7 +16,8 @@ pair<int, int> firstFound(SudokuBoard sboard)
 		{
 			if (sboard.board[i][j] == 0)
 			{
-				return make_pair(i, j);
+				pair<int, int> found = make_pair(i, j);
+				return found;
 			}
 		}
 	}
@@ -32,5 +36,8 @@ bool inference(SudokuBoard sboard, pair<int, int> coord, int val)
 
 bool maintainArcConsistency(SudokuBoard sboard, pair<int, int> coord, int val)
 {
+	
 	return true;
 }
+
+#endif

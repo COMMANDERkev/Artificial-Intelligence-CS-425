@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string>
+#include <locale>
 #include <algorithm>
 #include "SudokuBoard.h"
 using namespace std;
@@ -8,15 +10,8 @@ SudokuBoard::SudokuBoard()
 {
 	makeBegin();
 	makeEnd();
-
-	//for (int i = 0; i < 9; i++)
-	//{
-	//	for (int j = 0; j < 9; j++)
-	//	{
-	//		board[i][j] = 0;
-	//	}
-	//}
 }
+
 SudokuBoard::SudokuBoard(const SudokuBoard& sudoku)
 {
 	makeBegin();
@@ -24,11 +19,35 @@ SudokuBoard::SudokuBoard(const SudokuBoard& sudoku)
 	copy(sudoku.board.begin(), sudoku.board.end(), this->board.begin());
 }
 
+void SudokuBoard::input()
+{
+	cout << "enter below the initial board:\n";
+	string nums;
+	for (int i = 0; i < 9; i++)
+	{
+		getline(cin, nums);
+		// erases spaces from a string
+		nums.erase(remove_if(nums.begin(), nums.end(), ::isspace), nums.end());
+		for (int j = 0; j < 9; j++)
+		{
+			board[i][j] = nums[j] - '0';
+		}
+		
+	}
+	
+	// for (auto elem : board)
+	// {
+	// 	cin.getline(nums, 9);
+	// 	for (int i = 0; i < 9; i++)
+	// 	{
+	// 		elem[i] = nums[i] - '0';
+	// 		i++;
+	// 	}
+	// }
+}
 
 void SudokuBoard::print()
 {
-	cout << "the solution is:\n";
-
 	for (int i = 0; i < row; i++)
 	{
 		for (int j = 0; j < col; j++)
@@ -46,12 +65,6 @@ void SudokuBoard::print()
 		cout << "\n";
 	}
 }
-
-
-
-
-
-
 
 // these checks are abstracted to check if any values in a row, col or square are equal to one another
 bool SudokuBoard::checkRow(int r)
@@ -168,4 +181,18 @@ void SudokuBoard::makeEnd()
 	endSquares[6] = make_pair(8, 2);
 	endSquares[7] = make_pair(8, 5);
 	endSquares[8] = make_pair(8, 8);
+}
+
+bool boardCheck(SudokuBoard sboard)
+{
+	for (int i = 0; i < sboard.row; i++)
+	{
+		int j = i;
+		pair<int, int> coord = make_pair(i, j);
+		if (!sboard.checkCoordSpace(coord))
+		{
+			return false;
+		}
+	}
+	return true;
 }

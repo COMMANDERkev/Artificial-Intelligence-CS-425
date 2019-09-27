@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CONSTRAINTSATISFACTION_h
+#define CONSTRAINTSATISFACTION_h
 #include "SudokuBoard.h"
 //#include <utility>
 
@@ -9,3 +10,4 @@ pair<int, int> firstFound(SudokuBoard);
 pair<int, int> mostConstrainedVar(SudokuBoard);
 bool inference(SudokuBoard, pair<int, int>, int);
 bool maintainArcConsistency(SudokuBoard, pair<int, int>, int);
+#endif

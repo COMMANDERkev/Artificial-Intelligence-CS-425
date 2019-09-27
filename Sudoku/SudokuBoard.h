@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SUDOKUBOARD_h
+#define SUDOKUBOARD_h
 #include <utility>
 #include <array>
 using namespace std;
@@ -17,15 +18,18 @@ struct SudokuBoard
 
 	SudokuBoard();
 	SudokuBoard(const SudokuBoard&);
+	void input();
 	void makeBegin();
 	void makeEnd();
 	void print();
+	void placeNum(pair<int, int>, int);
 	bool checkRow(int);
 	bool checkCol(int);
 	bool checkSquare(int);
 	const bool checkCoordSpace(pair<int, int>);
 
-	// TODO: make function to check if it is a solution
-	
-	void placeNum(pair<int, int>, int);
+	// TODO: make function to check if it is a solution 
 };
+bool boardCheck(SudokuBoard);
+
+#endif
